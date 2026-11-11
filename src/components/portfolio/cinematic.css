@@ -1,0 +1,42 @@
+/* Motion layer: all decorative elements are non-interactive and independently pausable. */
+.portfolio .section-heading:after{content:none}
+.chapter-ghost{position:absolute;right:0;top:-65px;z-index:-1;font:800 clamp(150px,20vw,290px)/1 Arial;color:transparent;-webkit-text-stroke:1px #f5f7fa10;letter-spacing:-15px;pointer-events:none;will-change:transform}
+.reading-progress{position:absolute;bottom:-1px;left:0;width:100%;height:2px;background:#00e5f0;transform:scaleX(0);transform-origin:left;box-shadow:0 0 14px #00e5f070;pointer-events:none}
+.section-nav a[aria-current=location]{color:#00e5f0!important;text-shadow:0 0 15px #00e5f040}
+.section-nav>div a{position:relative}.section-nav>div a:after{content:"";position:absolute;left:0;right:0;bottom:-12px;height:1px;background:#f20519;transform:scaleX(0);transition:transform .3s}.section-nav a[aria-current=location]:after{transform:scaleX(1)}
+.scene-atmosphere{position:absolute;inset:0;overflow:hidden;z-index:-1;pointer-events:none}
+.signal-rail{position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,#00e5f035,transparent)}
+.signal-rail i{position:absolute;left:-20%;width:15%;height:1px;background:linear-gradient(90deg,transparent,#00e5f0);box-shadow:0 0 15px #00e5f070;animation:signal-travel 8s linear infinite;animation-play-state:paused}
+.signal-rail i:nth-child(2){animation-delay:-3s;width:7%;background:#f20519}.signal-rail i:nth-child(3){animation-delay:-6s;width:3%;background:#f5f7fa}
+.scene-fragments{position:absolute;inset:0;opacity:.5}.scene-fragments i{position:absolute;width:2px;height:2px;background:#00e5f0;box-shadow:0 0 8px #00e5f0;animation:fragment-drift 7s ease-in-out infinite;animation-play-state:paused}.scene-fragments i:nth-child(3n){width:15px;height:1px;background:#f20519;box-shadow:none}
+.terminal{overflow:visible}.terminal-body{position:relative;overflow:hidden}.terminal-body:after{content:"";position:absolute;left:0;right:0;top:-5%;height:1px;background:linear-gradient(90deg,transparent,#00e5f080,transparent);box-shadow:0 0 20px #00e5f040;animation:terminal-scan 9s linear infinite;animation-play-state:paused;pointer-events:none}
+.orbital-system{overflow:hidden}.radar-sweep{position:absolute;left:50%;top:50%;width:440px;height:440px;border-radius:50%;background:conic-gradient(from 0deg,transparent 0deg,transparent 305deg,#00e5f015 355deg,#00e5f055 360deg);transform:translate(-50%,-50%);animation:radar-turn 18s linear infinite;animation-play-state:paused;pointer-events:none;mask-image:radial-gradient(transparent 22%,#000 23%)}
+.orbit-satellite{position:absolute;left:50%;top:50%;width:0;height:0;animation:satellite-turn 12s linear infinite;animation-play-state:paused;pointer-events:none}.orbit-satellite i{display:block;width:5px;height:5px;border-radius:50%;background:#f20519;box-shadow:0 0 15px #f20519;transform:translateX(130px)}
+.tech-detail{animation:detail-resolve .45s ease-out both}.process-detail>div:not(.process-diagram){animation:detail-resolve .45s ease-out both}.process-large-number{animation:number-resolve .55s ease-out both}
+.timeline-traveler{position:absolute;left:calc(50% - 3px);top:0;width:7px;height:7px;border-radius:50%;background:#00e5f0;box-shadow:0 0 18px #00e5f0;animation:timeline-travel 7s ease-in-out infinite;animation-play-state:paused;pointer-events:none}
+.timeline-node{transition:background .3s,box-shadow .3s}.timeline-item:hover .timeline-node,.timeline-item:focus-within .timeline-node{background:#00e5f0;box-shadow:0 0 30px #00e5f0}
+.workflow{perspective:1000px}.workflow button:after{content:"";position:absolute;right:-18px;top:50%;height:3px;width:7px;background:#00e5f0;box-shadow:0 0 10px #00e5f0;animation:packet-travel 1.8s linear infinite;animation-play-state:paused;pointer-events:none}.workflow button:last-child:after{display:none}.workflow button:nth-child(even):after{animation-delay:-.9s;background:#f20519}.workflow button.active{transform:translateY(-7px);transition:transform .3s,background .3s}.metrics-grid{perspective:1200px}.metric{overflow:hidden}.metric:after{content:"";position:absolute;bottom:0;left:0;height:2px;width:30%;background:linear-gradient(90deg,transparent,#00e5f0,transparent);animation:metric-packet 6s linear infinite;animation-play-state:paused;pointer-events:none}.metric:nth-child(2):after{animation-delay:-2s;background:linear-gradient(90deg,transparent,#f20519,transparent)}
+.contact-grid{perspective:1200px}.contact-form:focus-within{border-color:#00e5f080;box-shadow:15px 15px 0 #00e5f008,0 0 45px #00e5f009}.contact-form{transition:border-color .35s,box-shadow .35s}.send-button>span,.text-link>span{transition:transform .3s}.send-button:hover:not(:disabled)>span,.text-link:hover>span{transform:translate(4px,-4px)}
+.portfolio-footer:before{width:var(--footer-reveal,100%);background:linear-gradient(90deg,#00e5f0,#00e5f030,transparent)}
+.portfolio-section.in-scene .signal-rail i,.portfolio-section.in-scene .scene-fragments i,.portfolio-section.in-scene .terminal-body:after,.portfolio-section.in-scene .radar-sweep,.portfolio-section.in-scene .orbit-satellite,.portfolio-section.in-scene .timeline-traveler,.portfolio-section.in-scene .workflow button:after,.portfolio-section.in-scene .metric:after{animation-play-state:running}
+.portfolio-section:not(.in-scene) .orbit-slot,.portfolio-section:not(.in-scene) .tech-node,.portfolio-section:not(.in-scene) .ring-one,.portfolio-section:not(.in-scene) .process-diagram span,.portfolio-section:not(.in-scene) .identity-emblem:before{animation-play-state:paused}
+.portfolio.scene-paused *,.portfolio.scene-paused *:before,.portfolio.scene-paused *:after{animation-play-state:paused!important}
+@media(min-width:1000px) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ .project-preview{transform:perspective(1200px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,-4deg));transition:transform .25s ease-out}
+ .project-preview:hover{transform:perspective(1200px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) translateY(-4px)}
+ .pointer-lit{background-image:radial-gradient(500px circle at var(--light-x,50%) var(--light-y,50%),#00e5f00c,transparent 60%)}
+ .project-preview.pointer-lit{background-image:radial-gradient(420px circle at var(--light-x,50%) var(--light-y,50%),#00e5f016,transparent 65%)}
+ .preview-red.pointer-lit{background-image:radial-gradient(420px circle at var(--light-x,50%) var(--light-y,50%),#f2051916,transparent 65%)}
+}
+@keyframes signal-travel{to{transform:translateX(900%)}}
+@keyframes fragment-drift{0%,100%{transform:translate(0,15px);opacity:.15}50%{transform:translate(12px,-25px);opacity:.8}}
+@keyframes terminal-scan{0%{transform:translateY(0);opacity:0}10%,85%{opacity:.6}100%{transform:translateY(550px);opacity:0}}
+@keyframes radar-turn{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes satellite-turn{to{transform:rotate(-360deg)}}
+@keyframes detail-resolve{from{opacity:.45;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@keyframes number-resolve{from{opacity:.25;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes timeline-travel{0%{top:0;opacity:0}10%,85%{opacity:1}100%{top:100%;opacity:0}}
+@keyframes packet-travel{0%{transform:translateX(-4px);opacity:0}40%{opacity:1}100%{transform:translateX(12px);opacity:0}}
+@keyframes metric-packet{from{transform:translateX(-100%)}to{transform:translateX(450%)}}
+@media(max-width:799px){.chapter-ghost{font-size:160px;top:-30px;letter-spacing:-10px}.radar-sweep,.orbit-satellite{display:none}.timeline-traveler{left:-3px}.workflow button:after{right:-10px;width:4px}.workflow button:nth-child(3):after{display:none}.scene-fragments i:nth-child(n+4){display:none}.scene-fragments{opacity:.25}.workflow button.active{transform:none}}
+@media(prefers-reduced-motion:reduce){.portfolio *,.portfolio *:before,.portfolio *:after{animation:none!important;transition:none!important}.radar-sweep,.orbit-satellite,.timeline-traveler,.scene-fragments,.signal-rail i,.terminal-body:after,.workflow button:after,.metric:after{display:none}.chapter-ghost{will-change:auto}.workflow button.active{transform:none}}
