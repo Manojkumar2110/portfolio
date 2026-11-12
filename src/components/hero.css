@@ -391,14 +391,15 @@
   );
 }
 
-.hero-disintegration-wrap {
+/* ── Full Viewport Disintegration Stage ── */
+.hero-disintegration-stage {
   position: absolute;
-  top: 0;
-  left: 51.5%;
-  right: -25vw;
-  bottom: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-  z-index: 20;
+  z-index: 25;
+  overflow: hidden;
 }
 
 .hero-click-flash {
@@ -419,6 +420,10 @@
   }
   .hero-portrait-frame {
     height: 75vh;
+  }
+  .hero-disintegration-stage {
+    inset: 0;
+    width: 100%;
   }
 }
 

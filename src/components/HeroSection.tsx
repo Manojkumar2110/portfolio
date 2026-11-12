@@ -271,7 +271,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* ── CENTERED PORTRAIT & RIGHT-SIDE DISINTEGRATION ── */}
+      {/* ── CENTERED PORTRAIT ── */}
       <div ref={portraitCenterRef} className="hero-portrait-stage">
         <div className="hero-portrait-frame">
           {/* Studio Backlight */}
@@ -295,13 +295,11 @@ export default function HeroSection() {
             className="hero-portrait-img"
             sizes="100vw"
           />
-
-          {/* Particle Disintegration Canvas on Right Side */}
-          <div className="hero-disintegration-wrap">
-            <GlitchDisintegrationCanvas intensity={1.0} />
-          </div>
         </div>
       </div>
+
+      {/* ── FULL VIEWPORT DISINTEGRATION CANVAS (fixed, sits above portrait) ── */}
+      <GlitchDisintegrationCanvas intensity={1.0} />
 
       {/* Interactive Glitch Flash on Click */}
       {isGlitching && <div className="hero-click-flash" />}
