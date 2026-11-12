@@ -21,11 +21,6 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     });
 
     lenisRef.current = lenis;
-    const introState = (event: Event) => {
-      if ((event as CustomEvent<boolean>).detail) lenis.stop();
-      else lenis.start();
-    };
-    document.addEventListener("portfolio:intro", introState);
 
     let animId: number;
     const raf = (time: number) => {
@@ -35,7 +30,6 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     animId = requestAnimationFrame(raf);
 
     return () => {
-      document.removeEventListener("portfolio:intro", introState);
       cancelAnimationFrame(animId);
       lenis.destroy();
     };

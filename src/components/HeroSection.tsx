@@ -1,9 +1,10 @@
- 'use client';
+'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import GlitchDisintegrationCanvas from './GlitchDisintegrationCanvas';
+import CyberEyeFlare from './CyberEyeFlare';
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLElement>(null);
@@ -22,39 +23,6 @@ export default function HeroSection() {
   const [isScrambling, setIsScrambling] = useState(false);
   const scrambleRef = useRef<NodeJS.Timeout | null>(null);
   const entranceTimeline = useRef<gsap.core.Timeline | null>(null);
-
-  // The intro opens directly onto these real hero elements, never a duplicate.
-  useEffect(() => {
-    let reveal: gsap.core.Timeline | null = null;
-    const hud = [hudTopLeftRef.current, hudTopRightRef.current, hudBottomLeftRef.current, hudBottomRightRef.current];
-    const targets = [...hud, leftColRef.current, portraitCenterRef.current];
-    const onIntro = (event: Event) => {
-      const phase = (event as CustomEvent<string>).detail;
-      reveal?.kill();
-      entranceTimeline.current?.kill();
-      gsap.killTweensOf(targets);
-      if (phase === 'prepare') {
-        gsap.set(hud, { opacity: 0, scale: .85 });
-        gsap.set(leftColRef.current, { opacity: 0, x: -45 });
-        gsap.set(portraitCenterRef.current, { opacity: 0, scale: 1.16, y: 30 });
-      } else if (phase === 'reveal') {
-        reveal = gsap.timeline({ defaults: { ease: 'power3.out' } });
-        reveal.to(portraitCenterRef.current, { opacity: 1, scale: 1, y: 0, duration: 1.8 }, 0)
-          .to(leftColRef.current, { opacity: 1, x: 0, duration: 1.05 }, .65)
-          .to(hud, { opacity: 1, scale: 1, duration: .65, stagger: .08 }, 1.05);
-      } else {
-        gsap.set(hud, { opacity: 1, scale: 1 });
-        // Preserve the hero's CSS vertical centering after replay or skip.
-        gsap.set(leftColRef.current, { opacity: 1, clearProps: 'transform' });
-        gsap.set(portraitCenterRef.current, { opacity: 1, scale: 1, y: 0 });
-      }
-    };
-    document.addEventListener('portfolio:hero-intro', onIntro);
-    return () => {
-      document.removeEventListener('portfolio:hero-intro', onIntro);
-      reveal?.kill();
-    };
-  }, []);
 
   // ── Decrypt Scramble Animation for MANOJ ─────────────────────────
   const triggerNameScramble = () => {
@@ -141,8 +109,8 @@ export default function HeroSection() {
       0.1
     );
 
-    // 2. Left Typography Reveal
-    tl.to(leftColRef.current, { opacity: 1, x: 0, duration: 0.75 }, 0.35);
+    // 2. Left Typography Reveal (clearProps keeps CSS vertical alignment)
+    tl.to(leftColRef.current, { opacity: 1, x: 0, duration: 0.75, clearProps: 'transform' }, 0.35);
 
     // 3. Centered Portrait Emerges Clear & Sharp
     tl.to(portraitCenterRef.current, { opacity: 1, scale: 1, duration: 1.0, ease: 'power2.out' }, 0.5);
@@ -184,7 +152,7 @@ export default function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative w-screen h-screen overflow-hidden bg-black select-none flex items-center justify-center"
+      className="relative w-full h-screen min-h-screen overflow-hidden bg-black select-none flex items-center justify-center"
       style={{ perspective: '1200px' }}
     >
       {/* ── Pure Pitch Black Background (Zero Light Spill to Left) ── */}
@@ -193,7 +161,7 @@ export default function HeroSection() {
       {/* Subtle CRT Scanlines */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.04] scanline-bg z-10" />
 
-      {/* ── TOP-LEFT HUD: Bracket ┌ & 'REALITY IS OVERRATED' ── */}
+      {/* ── TOP-LEFT HUD: Bracket ┌ & 'CODE CREATES REALITY' ── */}
       <div
         ref={hudTopLeftRef}
         className="absolute top-6 left-6 sm:top-8 sm:left-10 md:top-10 md:left-14 z-30 pointer-events-none"
@@ -381,6 +349,9 @@ export default function HeroSection() {
               }}
             />
           </div>
+
+          {/* ── Cyber Eye Flare with Interactive Parallax Bloom ── */}
+          <CyberEyeFlare xPercent={48.5} yPercent={34.2} />
 
           {/* ── Glitch Disintegration Canvas Placed on Right Half of Image (Reduced Density) ── */}
           <div className="absolute top-0 right-0 w-1/2 h-full pointer-events-none z-20">
