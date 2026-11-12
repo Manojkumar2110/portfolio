@@ -343,6 +343,22 @@
   object-position: center bottom;
   pointer-events: none;
   z-index: 1;
+  mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 48%,
+    rgba(0, 0, 0, 0.6) 53%,
+    rgba(0, 0, 0, 0.1) 60%,
+    transparent 66%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 48%,
+    rgba(0, 0, 0, 0.6) 53%,
+    rgba(0, 0, 0, 0.1) 60%,
+    transparent 66%
+  );
 }
 
 .hero-portrait-frame img.hero-portrait-img {
@@ -355,14 +371,32 @@
   pointer-events: none;
   z-index: 2;
   filter: brightness(0.72) contrast(1.28);
+  mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 50%,
+    rgba(0, 0, 0, 0.85) 53%,
+    rgba(0, 0, 0, 0.45) 58%,
+    rgba(0, 0, 0, 0.15) 66%,
+    transparent 76%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 50%,
+    rgba(0, 0, 0, 0.85) 53%,
+    rgba(0, 0, 0, 0.45) 58%,
+    rgba(0, 0, 0, 0.15) 66%,
+    transparent 76%
+  );
 }
 
 .hero-disintegration-wrap {
   position: absolute;
   top: 0;
-  right: 0;
-  width: 50%;
-  height: 100%;
+  left: 51.5%;
+  right: -25vw;
+  bottom: 0;
   pointer-events: none;
   z-index: 20;
 }
