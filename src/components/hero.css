@@ -1,0 +1,390 @@
+/* ── Clean, bulletproof hero styling ───────────────────────────── */
+
+.hero-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #000000;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: #000000;
+  z-index: 0;
+}
+
+.hero-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  z-index: 10;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.4)
+  );
+  background-size: 100% 4px;
+}
+
+/* ── HUD Elements ── */
+
+.hero-hud-tl {
+  position: absolute;
+  top: clamp(20px, 3.5vh, 44px);
+  left: clamp(20px, 3.5vw, 56px);
+  z-index: 30;
+  pointer-events: none;
+}
+
+.hero-hud-tl .bracket-tl {
+  width: 28px;
+  height: 28px;
+  border-top: 2px solid rgba(255, 255, 255, 0.8);
+  border-left: 2px solid rgba(255, 255, 255, 0.8);
+  border-top-left-radius: 2px;
+}
+
+.hero-hud-tl .hud-meta {
+  margin-top: 28px;
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.3;
+}
+
+.hero-hud-tl .hud-meta .cross {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: bold;
+  font-size: 12px;
+  padding-bottom: 4px;
+}
+
+.hero-hud-tl .hud-dots {
+  display: flex;
+  gap: 6px;
+  padding-top: 6px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 9px;
+}
+
+.hero-hud-tr {
+  position: absolute;
+  top: clamp(20px, 3.5vh, 44px);
+  right: clamp(20px, 3.5vw, 56px);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.hero-hud-tr .bracket-tr {
+  width: 28px;
+  height: 28px;
+  border-top: 2px solid rgba(255, 255, 255, 0.8);
+  border-right: 2px solid rgba(255, 255, 255, 0.8);
+  border-top-right-radius: 2px;
+}
+
+.hero-hud-tr .hud-crosses {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.hero-hud-bl {
+  position: absolute;
+  bottom: clamp(20px, 3.5vh, 44px);
+  left: clamp(20px, 3.5vw, 56px);
+  z-index: 30;
+  pointer-events: none;
+}
+
+.hero-hud-bl .bracket-bl {
+  width: 28px;
+  height: 28px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+  border-left: 2px solid rgba(255, 255, 255, 0.8);
+  border-bottom-left-radius: 2px;
+}
+
+.hero-hud-br {
+  position: absolute;
+  bottom: clamp(20px, 3.5vh, 44px);
+  right: clamp(20px, 3.5vw, 56px);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.hero-hud-br .cyber-node {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-hud-br .cyber-node span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.hero-hud-br .bracket-br {
+  width: 28px;
+  height: 28px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+  border-right: 2px solid rgba(255, 255, 255, 0.8);
+  border-bottom-right-radius: 2px;
+}
+
+/* ── Left-Side Typography ── */
+
+.hero-left-col {
+  position: absolute;
+  left: clamp(24px, 5.5vw, 85px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  max-width: 480px;
+  pointer-events: auto;
+}
+
+.hero-title-wrap {
+  cursor: pointer;
+  user-select: none;
+}
+
+.hero-name-title {
+  position: relative;
+  display: inline-block;
+  font-size: clamp(48px, 6.5vw, 96px);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-family: "SF Pro Display", -apple-system, "Inter", sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.hero-role-wrap {
+  position: relative;
+  display: inline-block;
+  margin-top: 14px;
+  cursor: pointer;
+}
+
+.hero-role-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-role-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00f0ff;
+  box-shadow: 0 0 8px #00f0ff;
+  animation: cyber-pulse 1.6s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.hero-role-text {
+  font-family: monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: clamp(12px, 1.4vw, 18px);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.hero-role-cursor {
+  color: #00f0ff;
+  margin-left: 4px;
+  animation: cursor-blink 0.85s infinite;
+}
+
+.hero-laser-line {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  margin-top: 8px;
+  background: linear-gradient(90deg, rgba(0, 240, 255, 0.4) 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
+  overflow: hidden;
+}
+
+.hero-laser-line .hero-laser-beam {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 70px;
+  background: linear-gradient(90deg, transparent, #00f0ff, #ffffff, #00f0ff, transparent);
+  box-shadow: 0 0 10px #00f0ff;
+  animation: laser-sweep 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.hero-quote-box {
+  margin-top: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  padding: 14px 20px;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.hero-quote-box:hover {
+  border-color: rgba(0, 240, 255, 0.5);
+}
+
+.hero-quote-box .corner-tr {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid rgba(0, 240, 255, 0.8);
+  border-right: 2px solid rgba(0, 240, 255, 0.8);
+}
+
+.hero-quote-box .corner-bl {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid rgba(255, 0, 60, 0.8);
+  border-left: 2px solid rgba(255, 0, 60, 0.8);
+}
+
+.hero-quote-box p {
+  font-family: monospace;
+  font-size: clamp(11px, 1.1vw, 13px);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+}
+
+.hero-quote-box p .quote-line1 {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.hero-quote-box p .quote-line2 {
+  display: block;
+  margin-top: 4px;
+}
+
+.hero-quote-box p .neon-red {
+  color: #ff1a1a;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  animation: red-neon-glow 2.2s ease-in-out infinite;
+}
+
+/* ── Centered Portrait & Right-Side Disintegration ── */
+
+.hero-portrait-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-portrait-frame {
+  position: relative;
+  height: clamp(450px, 92vh, 980px);
+  width: auto;
+  aspect-ratio: 1024 / 571;
+  max-width: 100vw;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.hero-portrait-frame img.hero-backlight-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-portrait-frame img.hero-portrait-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+  z-index: 2;
+  filter: brightness(0.72) contrast(1.28);
+}
+
+.hero-disintegration-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.hero-click-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 60, 0.2), transparent);
+  animation: loading-sweep 0.3s ease-out;
+}
+
+@media (max-width: 768px) {
+  .hero-left-col {
+    top: 38%;
+    left: 20px;
+    right: 20px;
+    max-width: none;
+  }
+  .hero-portrait-frame {
+    height: 75vh;
+  }
+}
+
