@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import GlitchDisintegrationCanvas from './GlitchDisintegrationCanvas';
-import CyberEyeFlare from './CyberEyeFlare';
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLElement>(null);
@@ -350,12 +349,9 @@ export default function HeroSection() {
             />
           </div>
 
-          {/* ── Cyber Eye Flare with Interactive Parallax Bloom ── */}
-          <CyberEyeFlare xPercent={48.5} yPercent={34.2} />
-
-          {/* ── Glitch Disintegration Canvas Placed on Right Half of Image (Reduced Density) ── */}
+          {/* ── Glitch Disintegration Canvas Placed on Right Half of Image ── */}
           <div className="absolute top-0 right-0 w-1/2 h-full pointer-events-none z-20">
-            <GlitchDisintegrationCanvas intensity={0.7} />
+            <GlitchDisintegrationCanvas intensity={1.0} />
           </div>
         </div>
       </div>

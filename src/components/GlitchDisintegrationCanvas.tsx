@@ -20,31 +20,15 @@ interface GlitchParticle {
   flickerSpeed: number;
   life: number;
   maxLife: number;
-  isLaser: boolean;
+  type: 'laser' | 'block' | 'chip';
   hasGlow: boolean;
+  glowColor?: string;
+  glowBlur?: number;
 }
-
-const GLITCH_PALETTE = [
-  // Crisp stark whites
-  '#ffffff',
-  '#f0f4f8',
-  // Electric cyan & ice blue (matching eye flare)
-  '#00f0ff',
-  '#4deeea',
-  '#74b9ff',
-  // Crimson red & magenta accents (matching theme & reference)
-  '#e00000',
-  '#ff1a2a',
-  '#ff4757',
-  // Subtle translucent data chips
-  'rgba(0, 240, 255, 0.65)',
-  'rgba(255, 26, 42, 0.65)',
-  'rgba(255, 255, 255, 0.75)',
-];
 
 export default function GlitchDisintegrationCanvas({
   className = '',
-  intensity = 0.65,
+  intensity = 1.0,
 }: GlitchDisintegrationCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -1000, y: -1000 });
@@ -81,70 +65,132 @@ export default function GlitchDisintegrationCanvas({
     };
     window.addEventListener('mousemove', onMouseMove, { passive: true });
 
-    // REDUCED DENSITY: clean, sparse, and elegant matching the reference
-    const COUNT = Math.floor(55 * intensity);
+    // Sleek, refined particle count
+    const COUNT = Math.floor(42 * intensity);
     const particles: GlitchParticle[] = [];
 
     const spawnParticle = (forceOrigin = false): GlitchParticle => {
-      const isLaser = Math.random() < 0.32;
+      const rand = Math.random();
+      let type: GlitchParticle['type'];
       let w: number;
       let h: number;
+      let color: string;
+      let isLaser = false;
+      let hasGlow = true;
+      let glowColor: string | undefined;
+      let glowBlur = 8;
+      let baseAlpha = 0.8;
 
-      if (isLaser) {
-        // Horizontal laser lines
-        w = 30 + Math.random() * 200;
-        h = 1 + Math.random() * 1.8;
+      if (rand < 0.3) {
+        // Sleek horizontal laser lines (reduced thickness: 1.5 - 3px)
+        type = 'laser';
+        isLaser = true;
+        w = 60 + Math.random() * 190;
+        h = 1.5 + Math.random() * 2;
+        const laserRand = Math.random();
+        if (laserRand < 0.55) {
+          color = '#ff1a2a';
+          glowColor = 'rgba(255, 26, 42, 0.85)';
+          glowBlur = 10;
+        } else if (laserRand < 0.85) {
+          color = '#00f0ff';
+          glowColor = 'rgba(0, 240, 255, 0.85)';
+          glowBlur = 9;
+        } else {
+          color = '#ffffff';
+          glowColor = 'rgba(255, 255, 255, 0.7)';
+          glowBlur = 6;
+        }
+        baseAlpha = 0.7 + Math.random() * 0.25;
+      } else if (rand < 0.68) {
+        // Scaled-down crisp cyber blocks (reduced size: 10px - 22px)
+        type = 'block';
+        const isSquare = Math.random() < 0.65;
+        const size = 11 + Math.random() * 11; // 11px to 22px max
+        w = size;
+        h = isSquare ? size : 8 + Math.random() * 16;
+
+        const colRand = Math.random();
+        if (colRand < 0.38) {
+          // Crimson red
+          color = '#ff1a2a';
+          glowColor = 'rgba(255, 26, 42, 0.7)';
+          glowBlur = 8;
+          baseAlpha = 0.75 + Math.random() * 0.2;
+        } else if (colRand < 0.58) {
+          // Translucent dark red
+          color = 'rgba(224, 0, 40, 0.6)';
+          glowColor = 'rgba(255, 0, 60, 0.4)';
+          glowBlur = 6;
+          baseAlpha = 0.6 + Math.random() * 0.25;
+        } else if (colRand < 0.8) {
+          // Electric cyan
+          color = '#00f0ff';
+          glowColor = 'rgba(0, 240, 255, 0.8)';
+          glowBlur = 10;
+          baseAlpha = 0.75 + Math.random() * 0.2;
+        } else if (colRand < 0.9) {
+          // Pale pinkish white
+          color = 'rgba(255, 230, 235, 0.85)';
+          glowColor = 'rgba(255, 80, 100, 0.6)';
+          glowBlur = 8;
+          baseAlpha = 0.8;
+        } else {
+          // Slate blue chip
+          color = 'rgba(74, 115, 155, 0.65)';
+          glowColor = 'rgba(0, 180, 255, 0.35)';
+          glowBlur = 6;
+          baseAlpha = 0.65;
+        }
       } else {
-        // Sparse digital chips
-        const isMicro = Math.random() < 0.4;
-        w = isMicro ? 4 + Math.random() * 6 : 8 + Math.random() * 22;
-        h = isMicro ? 3 + Math.random() * 5 : 4 + Math.random() * 9;
+        // Micro digital chips (reduced size: 5px - 10px)
+        type = 'chip';
+        w = 5 + Math.random() * 7;
+        h = 4 + Math.random() * 7;
+
+        const colRand = Math.random();
+        if (colRand < 0.45) {
+          color = colRand < 0.25 ? '#ff1a2a' : 'rgba(255, 26, 42, 0.65)';
+          glowColor = 'rgba(255, 26, 42, 0.6)';
+        } else if (colRand < 0.8) {
+          color = '#00f0ff';
+          glowColor = 'rgba(0, 240, 255, 0.7)';
+        } else {
+          color = 'rgba(240, 244, 248, 0.8)';
+          glowColor = 'rgba(255, 255, 255, 0.5)';
+        }
+        glowBlur = 6;
+        baseAlpha = 0.6 + Math.random() * 0.3;
       }
 
-      // X origin: starts from the midline (0.0 to 0.25) or distributed across right half
+      // X origin: slightly over the midline (-0.05 to 0.15) or across right side
       let startX: number;
       if (forceOrigin) {
-        startX = Math.random() * 0.16;
+        startX = -0.04 + Math.random() * 0.2;
       } else {
-        startX = Math.pow(Math.random(), 1.4) * 0.85;
+        startX = -0.04 + Math.pow(Math.random(), 1.25) * 0.85;
       }
 
-      // Y position: from upper head level down to chest
-      const startY = 0.12 + Math.random() * 0.82;
-
-      // Color selection matching reference
-      let color: string;
-      const colRand = Math.random();
-      if (isLaser) {
-        color = colRand < 0.5 ? '#ff1a2a' : colRand < 0.85 ? '#00f0ff' : '#ffffff';
-      } else if (colRand < 0.42) {
-        // Crimson reds
-        color = GLITCH_PALETTE[5 + Math.floor(Math.random() * 3)];
-      } else if (colRand < 0.78) {
-        // Cyans
-        color = GLITCH_PALETTE[2 + Math.floor(Math.random() * 3)];
-      } else {
-        // White
-        color = '#ffffff';
-      }
-
-      const baseAlpha = 0.35 + Math.random() * 0.55;
+      // Y position: from head level down to chest
+      const startY = 0.08 + Math.random() * 0.84;
 
       return {
         x: startX,
         y: startY,
         w,
         h,
-        vx: (0.12 + Math.random() * 0.65) * (isLaser ? 2.2 : 1.0),
-        vy: (Math.random() - 0.5) * 0.06,
+        vx: (0.12 + Math.random() * 0.45) * (isLaser ? 1.8 : 1.0),
+        vy: (Math.random() - 0.5) * 0.04,
         color,
         alpha: baseAlpha,
         baseAlpha,
-        flickerSpeed: 0.06 + Math.random() * 0.2,
+        flickerSpeed: 0.05 + Math.random() * 0.18,
         life: 0,
-        maxLife: 90 + Math.random() * 180,
-        isLaser,
-        hasGlow: isLaser || color === '#00f0ff' || color === '#ff1a2a',
+        maxLife: 110 + Math.random() * 180,
+        type,
+        hasGlow,
+        glowColor,
+        glowBlur,
       };
     };
 
@@ -154,7 +200,7 @@ export default function GlitchDisintegrationCanvas({
       particles.push(p);
     }
 
-    // Periodic subtle horizontal glitch slice
+    // Periodic horizontal digital slice effect
     let sliceActive = false;
     let sliceTimer = 0;
     let sliceY = 0;
@@ -168,19 +214,21 @@ export default function GlitchDisintegrationCanvas({
 
       // Subtle horizontal glitch slice
       sliceTimer += 0.016;
-      if (sliceTimer > 3.2 + Math.random() * 2.5) {
+      if (sliceTimer > 3.0 + Math.random() * 2.5) {
         sliceActive = true;
         sliceTimer = 0;
-        sliceY = (0.18 + Math.random() * 0.64) * height;
-        sliceH = 8 + Math.random() * 24;
-        setTimeout(() => { sliceActive = false; }, 60);
+        sliceY = (0.15 + Math.random() * 0.68) * height;
+        sliceH = 4 + Math.random() * 12;
+        setTimeout(() => {
+          sliceActive = false;
+        }, 50);
       }
 
       if (sliceActive) {
         ctx.save();
-        ctx.fillStyle = 'rgba(255, 0, 60, 0.12)';
+        ctx.fillStyle = 'rgba(255, 0, 60, 0.1)';
         ctx.fillRect(0, sliceY, width, sliceH);
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.1)';
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.08)';
         ctx.fillRect(4, sliceY + 1, width - 4, sliceH - 2);
         ctx.restore();
       }
@@ -191,8 +239,9 @@ export default function GlitchDisintegrationCanvas({
         const p = particles[i];
         p.life += 1;
 
+        // Smooth horizontal dissipation drift
         p.x += (p.vx / width) * 1.5;
-        p.y += (p.vy / height) + Math.sin(time * 2.5 + i) * 0.0002;
+        p.y += (p.vy / height) + Math.sin(time * 2.0 + i * 0.4) * 0.0002;
 
         const px = p.x * width;
         const py = p.y * height;
@@ -201,20 +250,20 @@ export default function GlitchDisintegrationCanvas({
         const dx = px - mouse.x;
         const dy = py - mouse.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 110) {
-          const push = (1 - dist / 110) * 1.0;
-          p.x += (dx / dist) * push * 0.006;
-          p.y += (dy / dist) * push * 0.003;
+        if (dist < 100) {
+          const push = (1 - dist / 100) * 1.0;
+          p.x += (dx / dist) * push * 0.004;
+          p.y += (dy / dist) * push * 0.002;
         }
 
         // Alpha fade in/out
         const lifeRatio = p.life / p.maxLife;
         let fade = 1.0;
-        if (lifeRatio < 0.12) fade = lifeRatio / 0.12;
+        if (lifeRatio < 0.1) fade = lifeRatio / 0.1;
         else if (lifeRatio > 0.8) fade = (1 - lifeRatio) / 0.2;
 
-        const flicker = Math.sin(time * 18 * p.flickerSpeed + i);
-        p.alpha = p.baseAlpha * fade * (0.75 + 0.25 * flicker);
+        const flicker = Math.sin(time * 15 * p.flickerSpeed + i);
+        p.alpha = p.baseAlpha * fade * (0.8 + 0.2 * flicker);
 
         if (p.x > 1.15 || p.life >= p.maxLife || p.alpha <= 0.01) {
           particles[i] = spawnParticle(true);
@@ -224,16 +273,16 @@ export default function GlitchDisintegrationCanvas({
         ctx.save();
         ctx.globalAlpha = Math.max(0, Math.min(1, p.alpha));
 
-        if (p.hasGlow) {
-          ctx.shadowColor = p.color;
-          ctx.shadowBlur = p.isLaser ? 6 : 3;
+        if (p.hasGlow && p.glowColor) {
+          ctx.shadowColor = p.glowColor;
+          ctx.shadowBlur = p.glowBlur || 8;
         }
 
         ctx.fillStyle = p.color;
 
-        // Subtle jitter
-        const jx = Math.random() > 0.95 ? (Math.random() - 0.5) * 3 : 0;
-        const jy = Math.random() > 0.97 ? (Math.random() - 0.5) * 2 : 0;
+        // Subtle digital jitter
+        const jx = Math.random() > 0.95 ? (Math.random() - 0.5) * 2 : 0;
+        const jy = Math.random() > 0.97 ? (Math.random() - 0.5) * 1.5 : 0;
 
         ctx.fillRect(px + jx, py + jy, p.w, p.h);
         ctx.restore();
